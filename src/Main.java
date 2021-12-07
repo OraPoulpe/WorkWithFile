@@ -1,4 +1,6 @@
+import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.Vector;
 
 public class Main {
@@ -20,6 +22,13 @@ public class Main {
         matrixWriter.setting(row_count);
         matrixWriter.dataGenerate(seed);
         System.out.println("Generate file done");
+        rowStartPosition = matrixWriter.getRowStartPosition();
+        System.out.println(
+                getLineFromFileByLinePointer(
+                        fileName,
+                        rowStartPosition.get(100)
+                )
+        );
 
 
 //        long[][] data = new long[row_count][seed];
@@ -38,4 +47,22 @@ public class Main {
 //        }
 //        System.out.println("Work is done!!!!");
     }
+
+    public static String getLineFromFileByLinePointer(String fileName, long linePointer) {
+        String result = null;
+        File file = new File(fileName);
+        if (file.exists() && file.length() > 0) {
+            try {
+                RandomAccessFile randomAccessFile = new RandomAccessFile(file, "r");
+                randomAccessFile.seek(linePointer);
+                result = randomAccessFile.readLine();
+                randomAccessFile.close();
+            } catch (Exception e) {
+                return null;
+            }
+        }
+        return result;
+    }
+
+
 }
