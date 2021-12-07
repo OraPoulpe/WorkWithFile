@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.Arrays;
+import java.util.Scanner;
 import java.util.Vector;
 
 public class Main {
@@ -23,10 +25,15 @@ public class Main {
         matrixWriter.dataGenerate(seed);
         System.out.println("Generate file done");
         rowStartPosition = matrixWriter.getRowStartPosition();
-        System.out.println(
-                getLineFromFileByLinePointer(
-                        fileName,
-                        rowStartPosition.get(100)
+
+        System.out.println("SrAr line 101 = " +
+                getSrAr(
+                        convertStringToArrayOfLong(
+                                getLineFromFileByLinePointer(
+                                        fileName,
+                                        rowStartPosition.get(100)
+                                )
+                        )
                 )
         );
 
@@ -61,6 +68,24 @@ public class Main {
                 return null;
             }
         }
+        return result;
+    }
+
+    public static long[] convertStringToArrayOfLong(String input) {
+        Scanner scanner = new Scanner(input);
+        String[] cols = scanner.useDelimiter("\n").next().split(";");
+        long[] result = new long[cols.length - 1];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = Long.parseLong(cols[i + 1]);
+
+        }
+        return result;
+    }
+
+    public static double getSrAr(long[] data) {
+        double result = 0.0;
+        for (int i = 0; i < data.length; i++)
+            result += (1.0 * data[i] / data.length);
         return result;
     }
 
